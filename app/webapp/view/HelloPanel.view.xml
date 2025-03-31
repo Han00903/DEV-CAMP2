@@ -1,0 +1,84 @@
+<mvc:View
+    controllerName="ui5.walkthrough.controller.HelloPanel"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout"
+    height="100%">
+
+    <f:DynamicPage id="dynamicPageId"
+        stickySubheaderProvider="iconTabBar"
+        class="sapUiNoContentPadding"
+        toggleHeaderOnTitleClick="{/titleClickable}">
+
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="Header Title"/>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <Title text="여기 검색 넣기기"/>
+            </f:DynamicPageHeader>
+        </f:header>
+
+        <f:content>
+            <IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
+                <items>
+                    <IconTabFilter text="Products">
+                        <Table id="idProductsTable"
+                            inset="false"
+                            sticky="HeaderToolbar,ColumnHeaders"
+                            items="{
+                                    path: 'invoice>/Invoices',  
+                                    sorter: { path: 'ProductName' }
+                                }"
+                            class="sapUiSmallNegativeMarginBeginEnd"
+                            width="auto">
+                            <headerToolbar>
+                                <Toolbar>
+                                    <Label text="Invoices"/>
+                                </Toolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column width="12em">
+                                    <Text text="Product Name"/>
+                                </Column>
+                                <Column minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="Quantity"/>
+                                </Column>
+                                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                                    <Text text="Extended Price"/>
+                                </Column>
+                                <Column hAlign="End">
+                                    <Text text="Shipper Name"/>
+                                </Column>
+                                <Column hAlign="End">
+                                    <Text text="Shipped Date"/>
+                                </Column>
+                                <Column hAlign="End">
+                                    <Text text="Status"/>
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{invoice>ProductName}"/>
+                                        <Text text="{invoice>Quantity}"/>
+                                        <Text text="{invoice>ExtendedPrice}"/>
+                                        <Text text="{invoice>ShipperName}"/>
+                                        <Text text="{invoice>ShippedDate}"/>
+                                        <Text text="{invoice>Status}"/>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>
