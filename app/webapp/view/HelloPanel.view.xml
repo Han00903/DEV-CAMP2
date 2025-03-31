@@ -39,9 +39,15 @@
                             class="sapUiSmallNegativeMarginBeginEnd"
                             width="auto">
                             <headerToolbar>
-                                <Toolbar>
-                                    <Label text="Invoices"/>
-                                </Toolbar>
+                                <OverflowToolbar>
+                                    <Title text="Products" level="H2"/>
+                                    <ToolbarSpacer/>
+                                    <Button text="물품 요청 생성" type="Emphasized"/>
+                                    <Button
+                                        tooltip="Sort"
+                                        icon="sap-icon://sort"
+                                        press="handleSortButtonPressed"/>
+                                </OverflowToolbar>
                             </headerToolbar>
                             <columns>
                                 <Column width="12em">
