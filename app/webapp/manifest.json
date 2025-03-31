@@ -8,11 +8,11 @@
 			"version": "1.0.0"
 		},
 		"dataSources": {
-			"invoiceRemote": {
-				"uri": "V2/Northwind/Northwind.svc/",
+			"requestService": {
+				"uri": "/odata/v4/request/",
 				"type": "OData",
 				"settings": {
-					"odataVersion": "2.0"
+					"odataVersion": "4.0"
 				}
 			}
 		}
