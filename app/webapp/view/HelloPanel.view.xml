@@ -29,13 +29,10 @@
             <IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
                 <items>
                     <IconTabFilter text="Products">
-                        <Table id="idProductsTable"
+                        <Table id="idRequestTable"
                             inset="false"
                             sticky="HeaderToolbar,ColumnHeaders"
-                            items="{
-                                    path: 'invoice>/Invoices',  
-                                    sorter: { path: 'ProductName' }
-                                }"
+                            items="{requestModel>/value}"
                             class="sapUiSmallNegativeMarginBeginEnd"
                             width="auto">
                             <headerToolbar>
@@ -72,12 +69,12 @@
                             <items>
                                 <ColumnListItem>
                                     <cells>
-                                        <Text text="{invoice>ProductName}"/>
-                                        <Text text="{invoice>Quantity}"/>
-                                        <Text text="{invoice>ExtendedPrice}"/>
-                                        <Text text="{invoice>ShipperName}"/>
-                                        <Text text="{invoice>ShippedDate}"/>
-                                        <Text text="{invoice>Status}"/>
+                                        <Text text="{requestModel>request_date}"/>
+                                        <Text text="{requestModel>request_estimated_price}"/>
+                                        <Text text="{requestModel>request_number}"/>
+                                        <Text text="{requestModel>request_product}"/>
+                                        <Text text="{requestModel>request_quantity}"/>
+                                        <Text text="{requestModel>request_reject_reason}"/>
                                     </cells>
                                 </ColumnListItem>
                             </items>
