@@ -8,7 +8,7 @@ sap.ui.define([
     return Controller.extend("ui5.walkthrough.controller.HelloPanel", {
         onInit: function () {
             // Invoices.json 파일을 JSON 모델로 로드
-            var oModel = new JSONModel("/webapp/Invoices.json");  // 상대 경로로 수정
+            var oModel = new JSONModel("/webapp/Invoices.json");
             this.getView().setModel(oModel, "invoice");
         },
 

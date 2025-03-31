@@ -14,7 +14,7 @@
         <f:title>
             <f:DynamicPageTitle>
                 <f:heading>
-                    <Title text="Header Title"/>
+                    <Title text="물품 요청"/>
                 </f:heading>
             </f:DynamicPageTitle>
         </f:title>
