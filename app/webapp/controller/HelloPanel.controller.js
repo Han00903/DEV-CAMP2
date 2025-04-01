@@ -30,30 +30,34 @@ sap.ui.define([
         onCreateRequest: function () {
             var oView = this.getView();
             var oModel = oView.getModel("requestModel");
-
+        
+            // 고유한 ID 생성 (예: 'inputRequestNumber-1', 'inputRequestNumber-2' 등)
+            var dialogId = new Date().getTime(); // 현재 시간을 기반으로 고유한 ID 생성
+        
             // 사용자 입력을 받을 Dialog 생성
             var oDialog = new Dialog({
                 title: "물품 요청 생성",
                 content: new VBox({
                     items: [
-                        new Input({ placeholder: "Request Number", id: "inputRequestNumber", type: "Number" }),
-                        new Input({ placeholder: "Product Name", id: "inputProductName" }),
-                        new Input({ placeholder: "Quantity", id: "inputQuantity", type: "Number" }),
-                        new Input({ placeholder: "Estimated Price", id: "inputPrice", type: "Number" }),
-                        new Input({ placeholder: "Requester Name", id: "inputRequestor" }),
-                        new Input({ placeholder: "Request Reason", id: "inputReason" })
+                        new Input({ placeholder: "Request Number", id: "inputRequestNumber-" + dialogId, type: "Number" }),
+                        new Input({ placeholder: "Product Name", id: "inputProductName-" + dialogId }),
+                        new Input({ placeholder: "Quantity", id: "inputQuantity-" + dialogId, type: "Number" }),
+                        new Input({ placeholder: "Estimated Price", id: "inputPrice-" + dialogId, type: "Number" }),
+                        new Input({ placeholder: "Requester Name", id: "inputRequestor-" + dialogId }),
+                        new Input({ placeholder: "Request Reason", id: "inputReason-" + dialogId })
                     ]
                 }),
                 beginButton: new Button({
                     text: "저장",
                     press: function () {
-                        var iRequestNumber = parseInt(sap.ui.getCore().byId("inputRequestNumber").getValue(), 10);
-                        var sProductName = sap.ui.getCore().byId("inputProductName").getValue();
-                        var iQuantity = parseInt(sap.ui.getCore().byId("inputQuantity").getValue(), 10);
-                        var fPrice = parseFloat(sap.ui.getCore().byId("inputPrice").getValue());
-                        var sRequestor = sap.ui.getCore().byId("inputRequestor").getValue();
-                        var sReason = sap.ui.getCore().byId("inputReason").getValue();
-
+                        // 고유 ID를 사용하여 값을 가져옴
+                        var iRequestNumber = parseInt(sap.ui.getCore().byId("inputRequestNumber-" + dialogId).getValue(), 10);
+                        var sProductName = sap.ui.getCore().byId("inputProductName-" + dialogId).getValue();
+                        var iQuantity = parseInt(sap.ui.getCore().byId("inputQuantity-" + dialogId).getValue(), 10);
+                        var fPrice = parseFloat(sap.ui.getCore().byId("inputPrice-" + dialogId).getValue());
+                        var sRequestor = sap.ui.getCore().byId("inputRequestor-" + dialogId).getValue();
+                        var sReason = sap.ui.getCore().byId("inputReason-" + dialogId).getValue();
+        
                         // 요청 데이터 생성
                         var oNewRequest = {
                             request_number: iRequestNumber,
@@ -66,7 +70,7 @@ sap.ui.define([
                             request_state: "Pending", // 초기 상태
                             request_reject_reason: "" // 거절 사유 (기본값: 빈 문자열)
                         };
-
+        
                         // 서버로 POST 요청 보내기
                         $.ajax({
                             url: "/odata/v4/request/Request",
@@ -82,9 +86,9 @@ sap.ui.define([
                                 MessageToast.show("물품 요청 생성에 실패했습니다.");
                             }
                         });
-
+        
                         console.log("전송된 요청 데이터:", oNewRequest);
-
+        
                         oDialog.close();
                     }
                 }),
@@ -95,7 +99,7 @@ sap.ui.define([
                     }
                 })
             });
-
+        
             oView.addDependent(oDialog);
             oDialog.open();
         }
