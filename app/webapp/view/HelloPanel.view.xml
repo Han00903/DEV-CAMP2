@@ -32,18 +32,14 @@
                         <Table id="idRequestTable"
                             inset="false"
                             sticky="HeaderToolbar,ColumnHeaders"
-                            items="{requestModel>/value}"
+                            items="{requestModel>/value}" 
                             class="sapUiSmallNegativeMarginBeginEnd"
                             width="auto">
                             <headerToolbar>
                                 <OverflowToolbar>
                                     <Title text="Products" level="H2"/>
                                     <ToolbarSpacer/>
-                                    <Button text="물품 요청 생성" type="Emphasized"/>
-                                    <Button
-                                        tooltip="Sort"
-                                        icon="sap-icon://sort"
-                                        press="handleSortButtonPressed"/>
+                                    <Button text="물품 요청 생성" type="Emphasized" press="onCreateRequest"/>
                                 </OverflowToolbar>
                             </headerToolbar>
                             <columns>
