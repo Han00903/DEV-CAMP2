@@ -4,6 +4,8 @@
     xmlns="sap.m"
     xmlns:f="sap.f"
     xmlns:layout="sap.ui.layout"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
     height="100%">
 
     <f:DynamicPage id="dynamicPageId"
@@ -21,7 +23,50 @@
 
         <f:header>
             <f:DynamicPageHeader pinnable="true">
-                <Title text="여기 검색 넣기기"/>
+                <f:content>
+                    <fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem name="request_number" label="요청 번호" groupName="Group1" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input name="request_number" liveChange=".onRequestNumberChange" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem name="request_product" label="요청 물품" groupName="Group1" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input name="request_product" liveChange=".onRequestNumberChange" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem name="requestor" label="요청자" groupName="Group1" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input name="requestor" liveChange=".onRequestNumberChange" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem name="request_date" label="요청 일자" groupName="Group1" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DatePicker
+                                        name="request_date"
+                                        change=".onDateChange"
+                                        valueFormat="yyyy-MM-dd"
+                                        displayFormat="yyyy-MM-dd"/>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem name="request_state" label="처리 상태" groupName="Group1" visibleInFilterBar="true">
+                            <fb:control>
+                                <MultiComboBox
+                                    name="request_state"
+                                    selectionChange=".onSelectionChange"
+                                    items="{path: '/RequestStates', templateShareable: true}"
+                                    selectedKeys="{path: '/SelectedRequestStates'}">
+                                    <core:Item key="all" text="전체"/>
+                                    <core:Item key="approved" text="승인"/>
+                                    <core:Item key="rejected" text="반려"/>
+                                    <core:Item key="pending" text="처리대기"/>
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+                </f:content>
             </f:DynamicPageHeader>
         </f:header>
 
@@ -44,33 +89,33 @@
                             </headerToolbar>
                             <columns>
                                 <Column width="12em">
-                                    <Text text="Product Name"/>
+                                    <Text text="요청번호"/>
                                 </Column>
                                 <Column minScreenWidth="Tablet" demandPopin="true">
-                                    <Text text="Quantity"/>
+                                    <Text text="요청물품"/>
                                 </Column>
                                 <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                                    <Text text="Extended Price"/>
+                                    <Text text="요청수량"/>
                                 </Column>
                                 <Column hAlign="End">
-                                    <Text text="Shipper Name"/>
+                                    <Text text="요청자"/>
                                 </Column>
                                 <Column hAlign="End">
-                                    <Text text="Shipped Date"/>
+                                    <Text text="요청날짜"/>
                                 </Column>
                                 <Column hAlign="End">
-                                    <Text text="Status"/>
+                                    <Text text="요청상태"/>
                                 </Column>
                             </columns>
                             <items>
                                 <ColumnListItem>
                                     <cells>
-                                        <Text text="{requestModel>request_date}"/>
-                                        <Text text="{requestModel>request_estimated_price}"/>
                                         <Text text="{requestModel>request_number}"/>
                                         <Text text="{requestModel>request_product}"/>
                                         <Text text="{requestModel>request_quantity}"/>
-                                        <Text text="{requestModel>request_reject_reason}"/>
+                                        <Text text="{requestModel>requestor}"/>
+                                        <Text text="{requestModel>request_date}"/>
+                                        <Text text="{requestModel>request_state}"/>
                                     </cells>
                                 </ColumnListItem>
                             </items>
