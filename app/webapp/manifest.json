@@ -72,12 +72,23 @@
 					"pattern": "",
 					"name": "overview",
 					"target": "overview"
+				},
+				{
+					"pattern": "detail/{request_number}",
+					"name": "detail",
+					"target": "detail"
 				}
 			],
 			"targets": {
 				"overview": {
 					"id": "overview",
 					"name": "Overview"
+				},
+				"detail": {
+					"id": "detail",
+					"name": "Detail",
+					"viewName": "Detail",
+					"viewLevel": 2
 				}
 			}
 		}

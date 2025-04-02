@@ -75,16 +75,23 @@
                         <Table id="idRequestTable"
                             inset="false"
                             sticky="HeaderToolbar,ColumnHeaders"
-                            items="{requestModel>/value}" 
+                            items="{
+                                path: 'requestModel>/value',
+                                sorter: { path: 'request_product' }
+                            }"
                             class="sapUiSmallNegativeMarginBeginEnd"
                             width="auto">
+                            
                             <headerToolbar>
                                 <OverflowToolbar>
                                     <Title text="Products" level="H2"/>
                                     <ToolbarSpacer/>
+                                    <SearchField search="onSearch" width="17.5rem"/>
+                                    <OverflowToolbarButton icon="sap-icon://sort" type="Transparent" press="onSort"/>
                                     <Button text="물품 요청 생성" type="Emphasized" press="onCreateRequest"/>
                                 </OverflowToolbar>
                             </headerToolbar>
+                            
                             <columns>
                                 <Column width="12em">
                                     <Text text="요청번호"/>
@@ -105,17 +112,16 @@
                                     <Text text="요청상태"/>
                                 </Column>
                             </columns>
+                            
                             <items>
-                                <ColumnListItem>
+                                <ColumnListItem type="Navigation" press="onListItemPress">
                                     <cells>
                                         <Text text="{requestModel>request_number}"/>
                                         <Text text="{requestModel>request_product}"/>
                                         <Text text="{requestModel>request_quantity}"/>
                                         <Text text="{requestModel>requestor}"/>
                                         <Text text="{requestModel>request_date}"/>
-                                        <ComboBox
-                                            selectedKey="{requestModel>request_state}"
-                                            change=".onRequestStateChange">
+                                        <ComboBox selectedKey="{requestModel>request_state}" change=".onRequestStateChange">
                                             <core:Item key="대기" text="대기"/>
                                             <core:Item key="반려" text="반려"/>
                                             <core:Item key="승인" text="승인"/>
@@ -124,6 +130,7 @@
                                 </ColumnListItem>
                             </items>
                         </Table>
+
                     </IconTabFilter>
                 </items>
             </IconTabBar>

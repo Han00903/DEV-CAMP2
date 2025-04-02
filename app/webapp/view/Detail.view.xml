@@ -1,0 +1,10 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    controllerName="ui5.walkthrough.controller.Detail">
+    <Page title="Detail Page">
+        <content>
+            <Text id="detailText" text="Loading..."/>
+        </content>
+    </Page>
+</mvc:View>

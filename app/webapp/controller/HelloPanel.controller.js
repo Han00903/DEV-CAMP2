@@ -212,7 +212,42 @@ sap.ui.define([
                 }
             });
         },
+
+        onListItemPress: function (oEvent) {
+            var oRouter = this.getOwnerComponent().getRouter(); // 라우터 가져오기
+            var oNextUIState = this.getOwnerComponent().getHelper().getNextUIState(1);
+            
+            var oBindingContext = oEvent.getSource().getBindingContext("requestModel");
+            if (!oBindingContext) {
+                console.error("❌ 바인딩 컨텍스트를 찾을 수 없습니다.");
+                return;
+            }
         
+            var product = oBindingContext.getProperty("request_number"); // request_number 사용
+            console.log("✅ 선택된 request_number:", product); // 값 확인
+        
+            if (!product) {
+                console.error("❌ 요청 번호를 찾을 수 없습니다.");
+                return;
+            }
+        
+            console.log("🔄 라우팅 시작 - 이동할 URL: /detail/" + product);
+            oRouter.navTo("detail", {
+                layout: oNextUIState.layout,
+                request_number: product
+            });
+        },        
+
+        onSearch: function (oEvent) {
+            var oTableSearchState = [],
+                sQuery = oEvent.getParameter("query");
+
+            if (sQuery && sQuery.length > 0) {
+                oTableSearchState = [new Filter("request_product", FilterOperator.Contains, sQuery)];
+            }
+
+            this.getView().byId("idRequestTable").getBinding("items").filter(oTableSearchState, "Application");
+        },
 
         onSearch: function (oEvent) {
             var oFilterBar = this.byId("filterbar");
@@ -233,6 +268,16 @@ sap.ui.define([
 
             // 필터 적용
             oBinding.filter(aFilters);
-        }
+        },
+
+        onSort: function () {
+            this._bDescendingSort = !this._bDescendingSort;
+            var oTable = this.getView().byId("idRequestTable"),
+                oBinding = oTable.getBinding("items"),
+                oSorter = new Sorter("request_product", this._bDescendingSort);
+
+            oBinding.sort(oSorter);
+        },
+
     });
 });
