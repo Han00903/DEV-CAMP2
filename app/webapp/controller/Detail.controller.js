@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel"
-], function (Controller, JSONModel) {
+    "sap/ui/model/json/JSONModel",
+    "sap/m/MessageToast"
+], function (Controller, JSONModel, MessageToast) {
     "use strict";
 
     return Controller.extend("ui5.walkthrough.controller.Detail", {
@@ -11,23 +12,25 @@ sap.ui.define([
         },
 
         _onObjectMatched: function (oEvent) {
-            var sProductName = oEvent.getParameter("arguments").product;
-            if (!sProductName) {
-                console.error("❌ 제품명이 없습니다.");
-                return;
-            }
+            var sRequestNumber = oEvent.getParameter("arguments").request_number;
+            this._loadRequestData(sRequestNumber);
+        },
 
-            var oModel = this.getView().getModel("products");
-            var oData = oModel.getProperty("/");
+        _loadRequestData: function (sRequestNumber) {
+            var oModel = new JSONModel();
+            var sUrl = "/odata/v4/request/Request(" + sRequestNumber + ")";
 
-            var oSelectedProduct = oData.find(item => item.Name === sProductName);
-            if (!oSelectedProduct) {
-                console.error("❌ 해당 제품 데이터를 찾을 수 없습니다.");
-                return;
-            }
+            oModel.attachRequestCompleted((oEvent) => {
+                if (oEvent.getParameter("success")) {
+                    this.getView().setModel(oModel, "requestDetailModel");
+                    console.log("데이터 로드 성공:", oModel.getData());
+                } else {
+                    console.error("데이터 로드 실패:", oEvent.getParameter("error"));
+                    MessageToast.show("데이터를 불러오는 데 실패했습니다.");
+                }
+            });
 
-            var orequestModel = new JSONModel(oSelectedProduct);
-            this.getView().setModel(orequestModel, "requestModel");
+            oModel.loadData(sUrl);
         },
 
         handleClose: function () {
@@ -35,8 +38,12 @@ sap.ui.define([
             oRouter.navTo("overview");
         },
 
-        toggleAreaPriority: function () {
-            console.log("✏️ 편집 기능 구현 예정");
+        /**
+         * 숫자 포맷팅 함수 (쉼표 추가)
+         */
+        formatNumberWithCommas: function (sValue) {
+            if (!sValue) return "0"; // 값이 없으면 기본값 0 반환
+            return parseInt(sValue, 10).toLocaleString(); // 숫자로 변환 후 1,000 단위 쉼표 추가
         }
     });
 });
