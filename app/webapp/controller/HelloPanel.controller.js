@@ -180,6 +180,27 @@ sap.ui.define([
 
             oView.addDependent(oDialog);
             oDialog.open();
+        },
+
+        onSearch: function (oEvent) {
+            var oFilterBar = this.byId("filterbar");
+            var aFilters = [];
+            var oBinding = this.byId("idRequestTable").getBinding("items");
+
+            // Filter Bar에서 필터 항목 가져오기
+            oFilterBar.getFilterGroupItems().forEach(function(oFilterGroupItem) {
+                var oControl = oFilterGroupItem.getControl();
+                if (oControl && oControl.getValue) {
+                    var sValue = oControl.getValue().toLowerCase();
+                    if (sValue) {
+                        var oFilter = new sap.ui.model.Filter(oFilterGroupItem.getName(), sap.ui.model.FilterOperator.Contains, sValue);
+                        aFilters.push(oFilter);
+                    }
+                }
+            });
+
+            // 필터 적용
+            oBinding.filter(aFilters);
         }
     });
 });

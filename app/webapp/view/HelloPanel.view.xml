@@ -33,12 +33,12 @@
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem name="request_product" label="요청 물품" groupName="Group1" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input name="request_product" liveChange=".onRequestNumberChange" />
+                                    <Input name="request_product" liveChange=".onRequestProductChange" />
                                 </fb:control>
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem name="requestor" label="요청자" groupName="Group1" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input name="requestor" liveChange=".onRequestNumberChange" />
+                                    <Input name="requestor" liveChange=".onRequestorChange" />
                                 </fb:control>
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem name="request_date" label="요청 일자" groupName="Group1" visibleInFilterBar="true">
@@ -50,20 +50,18 @@
                                         displayFormat="yyyy-MM-dd"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem name="request_state" label="처리 상태" groupName="Group1" visibleInFilterBar="true">
-                            <fb:control>
-                                <MultiComboBox
-                                    name="request_state"
-                                    selectionChange=".onSelectionChange"
-                                    items="{path: '/RequestStates', templateShareable: true}"
-                                    selectedKeys="{path: '/SelectedRequestStates'}">
-                                    <core:Item key="all" text="전체"/>
-                                    <core:Item key="approved" text="승인"/>
-                                    <core:Item key="rejected" text="반려"/>
-                                    <core:Item key="pending" text="처리대기"/>
-                                </MultiComboBox>
-                            </fb:control>
-                        </fb:FilterGroupItem>
+                            <fb:FilterGroupItem name="request_state" label="요청 상태" groupName="Group1" visibleInFilterBar="true">
+                                <fb:control>
+                                    <MultiComboBox
+                                        name="request_state"
+                                        selectionChange=".onSelectionChange"
+                                        selectedKeys="{path: '/SelectedRequestStates'}">
+                                        <core:Item key="승인" text="승인"/>
+                                        <core:Item key="반려" text="반려"/>
+                                        <core:Item key="대기" text="대기"/>
+                                    </MultiComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
                         </fb:filterGroupItems>
                     </fb:FilterBar>
                 </f:content>
