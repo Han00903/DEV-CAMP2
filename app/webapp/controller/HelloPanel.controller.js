@@ -7,8 +7,9 @@ sap.ui.define([
     "sap/m/Input",
     "sap/m/DatePicker", // DatePicker 추가
     "sap/m/VBox",
-    "sap/m/Label" // Label 추가
-], function (Controller, JSONModel, MessageToast, Dialog, Button, Input, DatePicker, VBox, Label) {
+    "sap/m/Label", // Label 추가
+    "sap/m/ComboBox" // ComboBox 추가
+], function (Controller, JSONModel, MessageToast, Dialog, Button, Input, DatePicker, VBox, Label, ComboBox) {
     "use strict";
 
     return Controller.extend("ui5.walkthrough.controller.HelloPanel", {
@@ -83,10 +84,24 @@ sap.ui.define([
                         }),
                         new VBox({
                             items: [
-                                new Label({ text: "요청날짜:" }), // 요청날짜 라벨 추가
+                                new Label({ text: "요청날짜:" }),
                                 new DatePicker({
                                     placeholder: "Request Date",
                                     id: "inputRequestDate-" + dialogId
+                                })
+                            ]
+                        }),
+                        new VBox({
+                            items: [
+                                new Label({ text: "요청상태:" }),
+                                new ComboBox({
+                                    id: "inputRequestState-" + dialogId,
+                                    items: [
+                                        { key: "대기", text: "대기" },  // "Pending" = 0
+                                        { key: "승인", text: "승인" },  // "Approved" = 1
+                                        { key: "반려", text: "반려" }   // "Rejected" = 2
+                                    ],
+                                    selectedKey: "대기" // Default value is "Pending"
                                 })
                             ]
                         })
@@ -96,7 +111,7 @@ sap.ui.define([
                     text: "저장",
                     press: function () {
                         // 고유 ID를 사용하여 값을 가져옴
-                        var iRequestNumber = requestNumber; // 자동 생성된 request_number 사용
+                        var iRequestNumber = requestNumber; // 자동 생성된 요청번호 사용
                         var sProductName = sap.ui.getCore().byId("inputProductName-" + dialogId).getValue();
                         var iQuantity = parseInt(sap.ui.getCore().byId("inputQuantity-" + dialogId).getValue(), 10);
                         var fPrice = parseFloat(sap.ui.getCore().byId("inputPrice-" + dialogId).getValue());
@@ -115,6 +130,9 @@ sap.ui.define([
                             ('0' + (new Date().getMonth() + 1)).slice(-2) + '-' + 
                             ('0' + new Date().getDate()).slice(-2);  // 날짜가 없으면 현재 날짜 사용
 
+                        // 상태를 ComboBox에서 가져오기 (숫자값으로)
+                        var sRequestState = sap.ui.getCore().byId("inputRequestState-" + dialogId).getSelectedKey();
+
                         // 요청 데이터 생성
                         var oNewRequest = {
                             request_number: iRequestNumber, // 자동 생성된 요청번호
@@ -124,7 +142,7 @@ sap.ui.define([
                             requestor: sRequestor,
                             request_reason: sReason,
                             request_date: sRequestDate, // 선택된 날짜만 저장
-                            request_state: "Pending", // 초기 상태
+                            request_state: sRequestState, // 숫자 값으로 상태 저장
                             request_reject_reason: "" // 거절 사유 (기본값: 빈 문자열)
                         };
 
