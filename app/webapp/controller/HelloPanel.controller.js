@@ -26,14 +26,22 @@ sap.ui.define([
 
             // 가져온 데이터를 requestModel로 설정
             this.getView().setModel(oModel, "requestModel");
+
+            // 로컬 저장소에서 마지막 요청번호 가져오기
+            var lastRequestNumber = parseInt(localStorage.getItem("lastRequestNumber"), 10);
+            if (isNaN(lastRequestNumber)) {
+                lastRequestNumber = 0; // 초기 값 설정
+            }
+            this._lastRequestNumber = lastRequestNumber;
         },
 
         onCreateRequest: function () {
             var oView = this.getView();
             var oModel = oView.getModel("requestModel");
 
-            // 고유한 요청번호를 자동으로 생성 (timestamp를 사용하여 유니크한 값 생성)
-            var requestNumber = Math.floor(new Date().getTime() / 1000); // 밀리초를 초 단위로 변경하여 Integer 범위 내 값 생성
+            // 요청번호를 자동으로 증가시키기
+            this._lastRequestNumber++;
+            var requestNumber = this._lastRequestNumber; // 자동으로 증가된 요청번호 사용
 
             // 고유한 ID 생성 (예: 'inputRequestNumber-1', 'inputRequestNumber-2' 등)
             var dialogId = new Date().getTime(); // 현재 시간을 기반으로 고유한 ID 생성
@@ -43,17 +51,6 @@ sap.ui.define([
                 title: "물품 요청 생성",
                 content: new VBox({
                     items: [
-                        new VBox({
-                            items: [
-                                new Label({ text: "요청번호:" }),
-                                // 자동으로 생성된 요청번호를 Input 필드에 표시
-                                new Input({
-                                    value: requestNumber.toString(), // 자동 생성된 요청번호를 입력 필드에 설정
-                                    id: "inputRequestNumber-" + dialogId,
-                                    editable: false // 사용자가 수정할 수 없도록 설정
-                                })
-                            ]
-                        }),
                         new VBox({
                             items: [
                                 new Label({ text: "요청물품:" }),
@@ -108,7 +105,15 @@ sap.ui.define([
                         
                         // DatePicker에서 선택된 날짜 가져오기
                         var oRequestDate = sap.ui.getCore().byId("inputRequestDate-" + dialogId).getDateValue();
-                        var sRequestDate = oRequestDate ? oRequestDate.toISOString() : new Date().toISOString(); // 날짜가 없으면 현재 날짜 사용
+                        
+                        // Date 객체에서 년, 월, 일만 추출하여 'YYYY-MM-DD' 형식으로 변환
+                        var sRequestDate = oRequestDate ? 
+                            oRequestDate.getFullYear() + '-' + 
+                            ('0' + (oRequestDate.getMonth() + 1)).slice(-2) + '-' + 
+                            ('0' + oRequestDate.getDate()).slice(-2) : 
+                            new Date().getFullYear() + '-' + 
+                            ('0' + (new Date().getMonth() + 1)).slice(-2) + '-' + 
+                            ('0' + new Date().getDate()).slice(-2);  // 날짜가 없으면 현재 날짜 사용
 
                         // 요청 데이터 생성
                         var oNewRequest = {
@@ -118,7 +123,7 @@ sap.ui.define([
                             request_estimated_price: fPrice,
                             requestor: sRequestor,
                             request_reason: sReason,
-                            request_date: sRequestDate, // 선택된 날짜 또는 현재 날짜
+                            request_date: sRequestDate, // 선택된 날짜만 저장
                             request_state: "Pending", // 초기 상태
                             request_reject_reason: "" // 거절 사유 (기본값: 빈 문자열)
                         };
@@ -140,6 +145,9 @@ sap.ui.define([
                         });
 
                         console.log("전송된 요청 데이터:", oNewRequest);
+
+                        // 요청번호를 로컬 저장소에 저장
+                        localStorage.setItem("lastRequestNumber", requestNumber);
 
                         oDialog.close();
                     }
