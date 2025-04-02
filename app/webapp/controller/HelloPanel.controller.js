@@ -272,35 +272,46 @@ sap.ui.define([
         },        
 
         onSearch: function (oEvent) {
-            var oTableSearchState = [],
-                sQuery = oEvent.getParameter("query");
-
-            if (sQuery && sQuery.length > 0) {
-                oTableSearchState = [new Filter("request_product", FilterOperator.Contains, sQuery)];
-            }
-
-            this.getView().byId("idRequestTable").getBinding("items").filter(oTableSearchState, "Application");
-        },
-
-        onSearch: function (oEvent) {
-            var oFilterBar = this.byId("filterbar");
             var aFilters = [];
-            var oBinding = this.byId("idRequestTable").getBinding("items");
-
-            // Filter Bar에서 필터 항목 가져오기
-            oFilterBar.getFilterGroupItems().forEach(function(oFilterGroupItem) {
+            var oTable = this.byId("idRequestTable");
+            var oBinding = oTable.getBinding("items");
+            var oFilterBar = this.byId("filterbar");
+        
+            // 필터 바에서 모든 필터 가져오기
+            oFilterBar.getFilterGroupItems().forEach(function (oFilterGroupItem) {
                 var oControl = oFilterGroupItem.getControl();
-                if (oControl && oControl.getValue) {
-                    var sValue = oControl.getValue().toLowerCase();
-                    if (sValue) {
-                        var oFilter = new sap.ui.model.Filter(oFilterGroupItem.getName(), sap.ui.model.FilterOperator.Contains, sValue);
-                        aFilters.push(oFilter);
+                var sFilterName = oFilterGroupItem.getName();
+        
+                if (oControl) {
+                    if (oControl instanceof sap.m.Input) {
+                        var sValue = oControl.getValue().trim();
+                        if (sValue) {
+                            // 숫자 필터인지 확인하고 적절한 비교 연산자 적용
+                            if (!isNaN(sValue)) {
+                                aFilters.push(new sap.ui.model.Filter(sFilterName, sap.ui.model.FilterOperator.EQ, sValue));
+                            } else {
+                                aFilters.push(new sap.ui.model.Filter(sFilterName, sap.ui.model.FilterOperator.Contains, sValue));
+                            }
+                        }
+                    } else if (oControl instanceof sap.m.DatePicker) {
+                        var sDateValue = oControl.getDateValue();
+                        if (sDateValue) {
+                            aFilters.push(new sap.ui.model.Filter(sFilterName, sap.ui.model.FilterOperator.EQ, sDateValue));
+                        }
+                    } else if (oControl instanceof sap.m.MultiComboBox) {
+                        var aSelectedKeys = oControl.getSelectedKeys();
+                        if (aSelectedKeys.length > 0) {
+                            var aStateFilters = aSelectedKeys.map(function (sKey) {
+                                return new sap.ui.model.Filter(sFilterName, sap.ui.model.FilterOperator.EQ, sKey);
+                            });
+                            aFilters.push(new sap.ui.model.Filter({ filters: aStateFilters, and: false }));
+                        }
                     }
                 }
             });
-
+        
             // 필터 적용
-            oBinding.filter(aFilters);
+            oBinding.filter(aFilters, "Application");
         },
 
         onSort: function () {
