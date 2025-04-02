@@ -8,7 +8,8 @@ sap.ui.define([
     "sap/m/DatePicker", // DatePicker 추가
     "sap/m/VBox",
     "sap/m/Label", // Label 추가
-    "sap/m/ComboBox" // ComboBox 추가
+    "sap/m/ComboBox",
+    "sap/ui/model/Sorter"
 ], function (Controller, JSONModel, MessageToast, Dialog, Button, Input, DatePicker, VBox, Label, ComboBox) {
     "use strict";
 
@@ -272,12 +273,18 @@ sap.ui.define([
 
         onSort: function () {
             this._bDescendingSort = !this._bDescendingSort;
-            var oTable = this.getView().byId("idRequestTable"),
-                oBinding = oTable.getBinding("items"),
-                oSorter = new Sorter("request_product", this._bDescendingSort);
-
-            oBinding.sort(oSorter);
-        },
-
+            var oTable = this.getView().byId("idRequestTable");
+            if (oTable) {
+                var oBinding = oTable.getBinding("items");
+                if (oBinding) {
+                    var oSorter = new sap.ui.model.Sorter("request_number", this._bDescendingSort);
+                    oBinding.sort(oSorter);
+                } else {
+                    console.warn("테이블 바인딩이 존재하지 않습니다.");
+                }
+            } else {
+                console.warn("idRequestTable을 찾을 수 없습니다.");
+            }
+        }
     });
 });
