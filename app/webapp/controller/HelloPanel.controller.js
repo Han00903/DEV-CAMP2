@@ -182,6 +182,38 @@ sap.ui.define([
             oDialog.open();
         },
 
+        onRequestStateChange: function (oEvent) {
+            var oComboBox = oEvent.getSource();
+            var sSelectedState = oComboBox.getSelectedKey();
+            var oBindingContext = oComboBox.getBindingContext("requestModel");
+            var oModel = this.getView().getModel("requestModel");
+        
+            if (!oBindingContext) {
+                console.error("바인딩 컨텍스트 없음");
+                return;
+            }
+        
+            var oRequest = oBindingContext.getObject();
+            var sRequestNumber = oRequest.request_number; // 변경할 요청의 ID
+        
+            // 변경된 상태를 서버에 업데이트 요청
+            $.ajax({
+                url: "/odata/v4/request/Request(" + sRequestNumber + ")",
+                type: "PATCH",
+                contentType: "application/json",
+                data: JSON.stringify({ request_state: sSelectedState }),
+                success: function () {
+                    MessageToast.show("요청 상태가 변경되었습니다.");
+                    oModel.loadData("/odata/v4/request/Request"); // 변경된 데이터 다시 로드
+                },
+                error: function (error) {
+                    console.error("요청 상태 업데이트 실패:", error);
+                    MessageToast.show("요청 상태 변경에 실패했습니다.");
+                }
+            });
+        },
+        
+
         onSearch: function (oEvent) {
             var oFilterBar = this.byId("filterbar");
             var aFilters = [];
