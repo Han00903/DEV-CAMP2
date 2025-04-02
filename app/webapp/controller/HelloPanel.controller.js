@@ -49,6 +49,14 @@ sap.ui.define([
         _loadRequestData: function (oModel) {
             oModel.loadData("/odata/v4/request/Request")
                 .then(() => {
+                    let aData = oModel.getData();
+        
+                    // 요청번호를 기준으로 내림차순 정렬
+                    aData.sort((a, b) => b.request_number - a.request_number);
+        
+                    // 정렬된 데이터를 모델에 설정
+                    oModel.setData(aData);
+        
                     console.log("서버에서 데이터를 성공적으로 가져왔습니다:", oModel.getData());
                 })
                 .catch((oError) => {
