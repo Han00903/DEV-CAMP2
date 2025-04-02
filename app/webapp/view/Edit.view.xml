@@ -1,11 +1,12 @@
-<mvc:View displayBlock="true" controllerName="ui5.walkthrough.controller.Detail" height="100%"
+<mvc:View displayBlock="true" controllerName="ui5.walkthrough.controller.Edit" height="100%"
     xmlns="sap.uxap"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:m="sap.m"
     xmlns:f="sap.f"
-    xmlns:form="sap.ui.layout.form">
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
 
-    <ObjectPageLayout id="ObjectPageLayout"
+    <ObjectPageLayout id="EditPageLayout"
                       showTitleInHeaderContent="true"
                       alwaysShowContentHeader="false"
                       preserveHeaderStateOnScroll="false"
@@ -16,86 +17,62 @@
         <headerTitle>
             <ObjectPageDynamicHeaderTitle>
                 <expandedHeading>
-                    <m:Title text="{requestDetailModel>/request_product}" wrapping="true" class="sapUiSmallMarginEnd"/>
+                    <m:Title text="{editModel>/request_product}" wrapping="true" class="sapUiSmallMarginEnd"/>
                 </expandedHeading>
-
-                <snappedHeading>
-                    <m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Center">
-                        <m:Title text="{requestDetailModel>/request_product}" wrapping="true" class="sapUiTinyMarginEnd"/>
-                    </m:FlexBox>
-                </snappedHeading>
-
-                <navigationActions>
-                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" 
-                        press="handleClose" tooltip="Close middle column"
-                        visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
-                </navigationActions>
-
+                                
                 <actions>
-                    <m:Button text="Edit" type="Emphasized" press="handleEdit"/>
-                    <m:Button text="Delete" type="Transparent" press="handleDelete"/>
+                    <m:Button text="Save" type="Emphasized" press="handleSave"/>
+                    <m:Button text="Cancel" press="handleCancel"/>
                 </actions>
             </ObjectPageDynamicHeaderTitle>
         </headerTitle>
 
-        <headerContent>
-            <m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Stretch">
-                <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
-                    <m:Label text="Request Date"/>
-                    <m:Text text="{requestDetailModel>/request_date}"/>
-                </m:VBox>
-                <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
-                    <m:Label text="Request Quantity"/>
-                    <m:Text text="{requestDetailModel>/request_quantity}"/>
-                </m:VBox>
-                <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
-                    <m:Label text="Requestor"/>
-                    <m:ObjectNumber number="{requestDetailModel>/requestor} {requestDetailModel>/Price}" emphasized="false"/>
-                </m:VBox>
-            </m:FlexBox>
-        </headerContent>
-
         <sections>
-            <ObjectPageSection title="Request Details">
+            <ObjectPageSection title="Edit Request Details">
                 <subSections>
                     <ObjectPageSubSection>
                         <blocks>
-                            <form:SimpleForm maxContainerCols="2" editable="false"
+                            <form:SimpleForm maxContainerCols="2" editable="true"
                                 layout="ResponsiveGridLayout" labelSpanL="12" labelSpanM="12"
                                 emptySpanL="0" emptySpanM="0" columnsL="1" columnsM="1">
                                 <form:content>
                                     <m:FlexBox direction="Column" class="sapUiMediumMargin">
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="요청 물품:" width="10rem"/>
-                                            <m:Text text="{requestDetailModel>/request_product}"/>
+                                            <m:Input value="{editModel>/request_product}"/>
                                         </m:FlexBox>
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="요청 수량:" width="10rem"/>
-                                            <m:Text text="{path: 'requestDetailModel>/request_quantity', formatter: '.formatNumberWithCommas'}"/>
+                                            <m:Input value="{editModel>/request_quantity}" type="Number"/>
                                         </m:FlexBox>
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="요청자:" width="10rem"/>
-                                            <m:Text text="{requestDetailModel>/requestor}"/>
+                                            <m:Input value="{editModel>/requestor}"/>
                                         </m:FlexBox>
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="요청 날짜:" width="10rem"/>
-                                            <m:Text text="{requestDetailModel>/request_date}"/>
+                                            <m:Input value="{editModel>/request_date}" type="Date"/>
                                         </m:FlexBox>
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="상태:" width="10rem"/>
-                                            <m:Text text="{requestDetailModel>/request_state}"/>
+                                            <m:Select selectedKey="{editModel>/request_state}">
+                                                <m:items>
+                                                    <core:Item key="대기" text="대기"/>
+                                                    <core:Item key="승인" text="승인"/>
+                                                    <core:Item key="반려" text="반려"/>
+                                                </m:items>
+                                            </m:Select>
                                         </m:FlexBox>
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="요청 사유:" width="10rem"/>
-                                            <m:Text text="{requestDetailModel>/request_reason}"/>
+                                            <m:TextArea value="{editModel>/request_reason}" rows="3"/>
                                         </m:FlexBox>
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="예상 가격:" width="10rem"/>
-                                            <m:Text text="{path: 'requestDetailModel>/request_estimated_price', formatter: '.formatNumberWithCommas'}"/>
+                                            <m:Input value="{editModel>/request_estimated_price}" type="Number"/>
                                         </m:FlexBox>
                                     </m:FlexBox>
                                 </form:content>
-
                             </form:SimpleForm>
                         </blocks>
                     </ObjectPageSubSection>

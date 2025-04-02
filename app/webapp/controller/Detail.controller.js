@@ -57,6 +57,10 @@ sap.ui.define([
         handleClose: function () {
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo("overview");
+        },
+        handleEdit: function () {
+            var oRouter = this.getOwnerComponent().getRouter();
+            oRouter.navTo("edit", { request_number: this.sRequestNumber });
         }
     });
 });

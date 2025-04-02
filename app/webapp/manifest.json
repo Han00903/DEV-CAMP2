@@ -77,6 +77,11 @@
 					"pattern": "detail/{request_number}",
 					"name": "detail",
 					"target": "detail"
+				},
+				{
+					"pattern": "edit/{request_number}",
+					"name": "edit",
+					"target": "edit"
 				}
 			],
 			"targets": {
@@ -89,6 +94,12 @@
 					"name": "Detail",
 					"viewName": "Detail",
 					"viewLevel": 2
+				},
+				"edit": {
+					"id": "edit",
+					"name": "Edit",
+					"viewName": "Edit",
+					"viewLevel": 3
 				}
 			}
 		}
