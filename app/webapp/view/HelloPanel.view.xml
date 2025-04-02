@@ -116,9 +116,9 @@
                                         <ComboBox
                                             selectedKey="{requestModel>request_state}"
                                             change=".onRequestStateChange">
-                                            <core:Item key="승인" text="승인"/>
-                                            <core:Item key="반려" text="반려"/>
                                             <core:Item key="대기" text="대기"/>
+                                            <core:Item key="반려" text="반려"/>
+                                            <core:Item key="승인" text="승인"/>
                                         </ComboBox>
                                     </cells>
                                 </ColumnListItem>
