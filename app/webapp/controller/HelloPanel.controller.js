@@ -56,6 +56,11 @@ sap.ui.define([
                 });
         },        
 
+        formatNumber: function (value) {
+            if (!value || isNaN(value)) return value;
+            return new Intl.NumberFormat("en-US").format(value);
+        },        
+
         onCreateRequest: function () {
             var oView = this.getView();
             var oModel = oView.getModel("requestModel");

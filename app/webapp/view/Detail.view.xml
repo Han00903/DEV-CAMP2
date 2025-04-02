@@ -42,15 +42,15 @@
             <m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Stretch">
                 <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
                     <m:Label text="Request Date"/>
-                    <m:Text text="{requestDetailModel>/request_date}"/>
+                    <m:Text text="{path: 'requestDetailModel>/request_date', formatter: '.formatNumber'}"/>
                 </m:VBox>
                 <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
                     <m:Label text="Request Quantity"/>
-                    <m:Text text="{requestDetailModel>/request_quantity}"/>
+                    <m:Text text="{path: 'requestDetailModel>/request_quantity', formatter: '.formatNumber'}"/>
                 </m:VBox>
                 <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd">
                     <m:Label text="Requestor"/>
-                    <m:ObjectNumber number="{requestDetailModel>/requestor} {requestDetailModel>/Price}" emphasized="false"/>
+                    <m:Text text="{path: 'requestDetailModel>/requestor', formatter: '.formatNumber'}"/>
                 </m:VBox>
             </m:FlexBox>
         </headerContent>
@@ -67,31 +67,31 @@
                                     <m:FlexBox direction="Column" class="sapUiMediumMargin">
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="요청 물품:" width="10rem"/>
-                                            <m:Text text="{requestDetailModel>/request_product}"/>
+                                            <m:Text text="{path: 'requestDetailModel>/request_product', formatter: '.formatNumber'}"/>
                                         </m:FlexBox>
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="요청 수량:" width="10rem"/>
-                                            <m:Text text="{path: 'requestDetailModel>/request_quantity', formatter: '.formatNumberWithCommas'}"/>
+                                            <m:Text text="{path: 'requestDetailModel>/request_quantity', formatter: '.formatNumber'}"/>
                                         </m:FlexBox>
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="요청자:" width="10rem"/>
-                                            <m:Text text="{requestDetailModel>/requestor}"/>
+                                            <m:Text text="{path: 'requestDetailModel>/requestor', formatter: '.formatNumber'}"/>
                                         </m:FlexBox>
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="요청 날짜:" width="10rem"/>
-                                            <m:Text text="{requestDetailModel>/request_date}"/>
+                                            <m:Text text="{path: 'requestDetailModel>/request_date', formatter: '.formatNumber'}"/>
                                         </m:FlexBox>
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="상태:" width="10rem"/>
-                                            <m:Text text="{requestDetailModel>/request_state}"/>
+                                            <m:Text text="{path: 'requestDetailModel>/request_state', formatter: '.formatNumber'}"/>
                                         </m:FlexBox>
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="요청 사유:" width="10rem"/>
-                                            <m:Text text="{requestDetailModel>/request_reason}"/>
+                                            <m:Text text="{path: 'requestDetailModel>/request_reason', formatter: '.formatNumber'}"/>
                                         </m:FlexBox>
                                         <m:FlexBox direction="Row" class="sapUiSmallMargin">
                                             <m:Label text="예상 가격:" width="10rem"/>
-                                            <m:Text text="{path: 'requestDetailModel>/request_estimated_price', formatter: '.formatNumberWithCommas'}"/>
+                                            <m:Text text="{path: 'requestDetailModel>/request_estimated_price', formatter: '.formatNumber'}"/>
                                         </m:FlexBox>
                                     </m:FlexBox>
                                 </form:content>

@@ -98,16 +98,16 @@
                                 <Column minScreenWidth="Tablet" demandPopin="true">
                                     <Text text="요청물품"/>
                                 </Column>
-                                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                                <Column minScreenWidth="Tablet" demandPopin="true">
                                     <Text text="요청수량"/>
                                 </Column>
-                                <Column hAlign="End">
+                                <Column>
                                     <Text text="요청자"/>
                                 </Column>
-                                <Column hAlign="End">
+                                <Column>
                                     <Text text="요청날짜"/>
                                 </Column>
-                                <Column hAlign="End">
+                                <Column>
                                     <Text text="요청상태"/>
                                 </Column>
                             </columns>
@@ -115,11 +115,11 @@
                             <items>
                                 <ColumnListItem type="Navigation" press="onListItemPress">
                                     <cells>
-                                        <Text text="{requestModel>request_number}"/>
-                                        <Text text="{requestModel>request_product}"/>
-                                        <Text text="{requestModel>request_quantity}"/>
-                                        <Text text="{requestModel>requestor}"/>
-                                        <Text text="{requestModel>request_date}"/>
+                                        <Text text="{path: 'requestModel>request_number', formatter: '.formatNumber'}"/>
+                                        <Text text="{path: 'requestModel>request_product', formatter: '.formatNumber'}"/>
+                                        <Text text="{path: 'requestModel>request_quantity', formatter: '.formatNumber'}"/>
+                                        <Text text="{path: 'requestModel>requestor', formatter: '.formatNumber'}"/>
+                                        <Text text="{path: 'requestModel>request_date', formatter: '.formatNumber'}"/>
                                         <ComboBox selectedKey="{requestModel>request_state}" change=".onRequestStateChange">
                                             <core:Item key="대기" text="대기"/>
                                             <core:Item key="반려" text="반려"/>

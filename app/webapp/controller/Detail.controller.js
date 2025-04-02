@@ -32,6 +32,11 @@ sap.ui.define([
             oModel.loadData(sUrl);
         },
 
+        formatNumber: function (value) {
+            if (!value || isNaN(value)) return value;
+            return new Intl.NumberFormat("en-US").format(value);
+        },
+
         handleDelete: function () {
             var sUrl = "/odata/v4/request/Request(" + this.sRequestNumber + ")";
         
