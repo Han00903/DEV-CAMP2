@@ -15,9 +15,38 @@ sap.ui.define([
 
     return Controller.extend("ui5.walkthrough.controller.HelloPanel", {
         onInit: function () {
+            var oRouter = this.getOwnerComponent().getRouter();
             var oModel = new JSONModel();
-
-            // 서버에서 데이터 가져오기
+        
+            // 서버에서 데이터 가져오기 (초기 로드)
+            this._loadRequestData(oModel);
+        
+            // 가져온 데이터를 requestModel로 설정
+            this.getView().setModel(oModel, "requestModel");
+        
+            // 로컬 저장소에서 마지막 요청번호 가져오기
+            var lastRequestNumber = parseInt(localStorage.getItem("lastRequestNumber"), 10);
+            if (isNaN(lastRequestNumber)) {
+                lastRequestNumber = 0; // 초기 값 설정
+            }
+            this._lastRequestNumber = lastRequestNumber;
+        
+            // "helloPanel" 페이지에 다시 접근할 때 데이터를 새로 불러오기
+            oRouter.getRoute("helloPanel").attachPatternMatched(this._onHelloPanelMatched, this);
+        },
+        
+        /**
+         * HelloPanel 페이지 접근 시 데이터를 다시 불러오는 함수
+         */
+        _onHelloPanelMatched: function () {
+            var oModel = this.getView().getModel("requestModel");
+            this._loadRequestData(oModel);
+        },
+        
+        /**
+         * 데이터를 서버에서 불러오는 함수
+         */
+        _loadRequestData: function (oModel) {
             oModel.loadData("/odata/v4/request/Request")
                 .then(() => {
                     console.log("서버에서 데이터를 성공적으로 가져왔습니다:", oModel.getData());
@@ -25,17 +54,7 @@ sap.ui.define([
                 .catch((oError) => {
                     console.error("데이터를 가져오는 데 실패했습니다:", oError);
                 });
-
-            // 가져온 데이터를 requestModel로 설정
-            this.getView().setModel(oModel, "requestModel");
-
-            // 로컬 저장소에서 마지막 요청번호 가져오기
-            var lastRequestNumber = parseInt(localStorage.getItem("lastRequestNumber"), 10);
-            if (isNaN(lastRequestNumber)) {
-                lastRequestNumber = 0; // 초기 값 설정
-            }
-            this._lastRequestNumber = lastRequestNumber;
-        },
+        },        
 
         onCreateRequest: function () {
             var oView = this.getView();

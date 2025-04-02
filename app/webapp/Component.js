@@ -13,24 +13,19 @@ sap.ui.define([
         },
 
         init() {
-            // call the init function of the parent
+            // 부모 클래스 초기화
             UIComponent.prototype.init.apply(this, arguments);
 
-            // set data model
-            const oData = {
-                recipient: {
-                    name: "World"
-                }
-            };
-            const oModel = new JSONModel(oData);
-            this.setModel(oModel);
+            // 기본 데이터 모델 설정
+            const oData = { recipient: { name: "World" } };
+            this.setModel(new JSONModel(oData));
 
-            // set device model
+            // Device 모델 설정
             const oDeviceModel = new JSONModel(Device);
             oDeviceModel.setDefaultBindingMode("OneWay");
             this.setModel(oDeviceModel, "device");
 
-            // create the views based on the url/hash
+            // 라우터 초기화
             this.getRouter().initialize();
         },
 
@@ -39,22 +34,22 @@ sap.ui.define([
         },
 
         getHelper() {
-			const oRootControl = this.getRootControl();
-			if (!oRootControl) {
-				console.error("❌ Root control이 아직 로드되지 않았습니다.");
-				return null;
-			}
-		
-			const oFCL = oRootControl.byId("flexibleColumnLayout");
-			if (!oFCL) {
-				console.error("❌ flexibleColumnLayout ID를 찾을 수 없습니다. App.view.xml에서 ID를 확인하세요.");
-				return null;
-			}
-		
-			return FlexibleColumnLayoutSemanticHelper.getInstanceFor(oFCL, {
-				defaultTwoColumnLayoutType: sap.f.LayoutType.TwoColumnsMidExpanded,
-				defaultThreeColumnLayoutType: sap.f.LayoutType.ThreeColumnsMidExpanded
-			});
-		}		
+            const oRootControl = this.getRootControl();
+            if (!oRootControl) {
+                console.error("❌ Root control이 아직 로드되지 않았습니다.");
+                return null;
+            }
+
+            const oFCL = oRootControl.byId("flexibleColumnLayout");
+            if (!oFCL) {
+                console.error("❌ flexibleColumnLayout ID를 찾을 수 없습니다. App.view.xml에서 ID를 확인하세요.");
+                return null;
+            }
+
+            return FlexibleColumnLayoutSemanticHelper.getInstanceFor(oFCL, {
+                defaultTwoColumnLayoutType: sap.f.LayoutType.TwoColumnsMidExpanded,
+                defaultThreeColumnLayoutType: sap.f.LayoutType.ThreeColumnsMidExpanded
+            });
+        }
     });
 });
