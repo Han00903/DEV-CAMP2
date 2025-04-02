@@ -34,30 +34,35 @@ sap.ui.define([
 
         handleDelete: function () {
             var sUrl = "/odata/v4/request/Request(" + this.sRequestNumber + ")";
-
+        
             jQuery.ajax({
                 url: sUrl,
                 type: "DELETE",
                 success: () => {
                     MessageToast.show("삭제되었습니다.");
-                    
-                    // overview 페이지로 이동 후 데이터 새로고침
+        
                     var oRouter = this.getOwnerComponent().getRouter();
-                    oRouter.navTo("overview", { refresh: true });
-
-                    // 강제 새로고침 (데이터 반영 확실히 하기)
-                    sap.ui.getCore().byId("overviewPage").getController().reloadData();
+                    oRouter.navTo("helloPanel"); // "HelloPanel" → "helloPanel" 변경
+        
+                    // 일정 시간 후 데이터 새로고침
+                    setTimeout(function () {
+                        var oHelloPanelPage = sap.ui.getCore().byId("helloPanel");
+                        if (oHelloPanelPage) {
+                            oHelloPanelPage.getController().reloadData();
+                        }
+                    }, 500);
                 },
                 error: () => {
                     MessageToast.show("삭제 중 오류가 발생했습니다.");
                 }
             });
         },
-
+        
         handleClose: function () {
             var oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("overview");
+            oRouter.navTo("helloPanel"); // "HelloPanel" → "helloPanel" 변경
         },
+
         handleEdit: function () {
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo("edit", { request_number: this.sRequestNumber });

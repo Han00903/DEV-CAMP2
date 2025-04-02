@@ -70,8 +70,8 @@
 			"routes": [
 				{
 					"pattern": "",
-					"name": "overview",
-					"target": "overview"
+					"name": "helloPanel",
+					"target": "helloPanel"
 				},
 				{
 					"pattern": "detail/{request_number}",
@@ -85,9 +85,10 @@
 				}
 			],
 			"targets": {
-				"overview": {
-					"id": "overview",
-					"name": "Overview"
+				"helloPanel": {
+					"id": "helloPanel",
+					"name": "helloPanel",
+					"viewName": "HelloPanel"
 				},
 				"detail": {
 					"id": "detail",
