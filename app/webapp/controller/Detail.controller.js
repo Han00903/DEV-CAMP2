@@ -13,6 +13,7 @@ sap.ui.define([
 
         _onObjectMatched: function (oEvent) {
             var sRequestNumber = oEvent.getParameter("arguments").request_number;
+            this.sRequestNumber = sRequestNumber; // 삭제 시 사용하기 위해 저장
             this._loadRequestData(sRequestNumber);
         },
 
@@ -23,9 +24,7 @@ sap.ui.define([
             oModel.attachRequestCompleted((oEvent) => {
                 if (oEvent.getParameter("success")) {
                     this.getView().setModel(oModel, "requestDetailModel");
-                    console.log("데이터 로드 성공:", oModel.getData());
                 } else {
-                    console.error("데이터 로드 실패:", oEvent.getParameter("error"));
                     MessageToast.show("데이터를 불러오는 데 실패했습니다.");
                 }
             });
@@ -33,17 +32,31 @@ sap.ui.define([
             oModel.loadData(sUrl);
         },
 
+        handleDelete: function () {
+            var sUrl = "/odata/v4/request/Request(" + this.sRequestNumber + ")";
+
+            jQuery.ajax({
+                url: sUrl,
+                type: "DELETE",
+                success: () => {
+                    MessageToast.show("삭제되었습니다.");
+                    
+                    // overview 페이지로 이동 후 데이터 새로고침
+                    var oRouter = this.getOwnerComponent().getRouter();
+                    oRouter.navTo("overview", { refresh: true });
+
+                    // 강제 새로고침 (데이터 반영 확실히 하기)
+                    sap.ui.getCore().byId("overviewPage").getController().reloadData();
+                },
+                error: () => {
+                    MessageToast.show("삭제 중 오류가 발생했습니다.");
+                }
+            });
+        },
+
         handleClose: function () {
             var oRouter = this.getOwnerComponent().getRouter();
             oRouter.navTo("overview");
-        },
-
-        /**
-         * 숫자 포맷팅 함수 (쉼표 추가)
-         */
-        formatNumberWithCommas: function (sValue) {
-            if (!sValue) return "0"; // 값이 없으면 기본값 0 반환
-            return parseInt(sValue, 10).toLocaleString(); // 숫자로 변환 후 1,000 단위 쉼표 추가
         }
     });
 });

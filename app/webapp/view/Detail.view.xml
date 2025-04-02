@@ -33,7 +33,7 @@
 
                 <actions>
                     <m:Button text="Edit" type="Emphasized" press="toggleAreaPriority"/>
-                    <m:Button text="Delete" type="Transparent"/>
+                    <m:Button text="Delete" type="Transparent" press="handleDelete"/>
                 </actions>
             </ObjectPageDynamicHeaderTitle>
         </headerTitle>
