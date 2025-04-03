@@ -24,21 +24,29 @@
         <f:header>
             <f:DynamicPageHeader pinnable="true">
                 <f:content>
-                    <fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
+                    <fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false"
+                        search=".onSearch"
+                        filterChange=".onFilterChange"
+                        afterVariantLoad=".onAfterVariantLoad">
+                        <Toolbar>
+                            <ToolbarSpacer/>  
+                            <Button text="Reset" press=".onResetFilters"/> 
+                        </Toolbar>
+
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem name="request_number" label="요청 번호" groupName="Group1" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input name="request_number" liveChange=".onRequestNumberChange" />
+                                    <Input name="request_number" liveChange=".onRequestNumberChange"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem name="request_product" label="요청 물품" groupName="Group1" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input name="request_product" liveChange=".onRequestProductChange" />
+                                    <Input name="request_product" liveChange=".onRequestProductChange"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem name="requestor" label="요청자" groupName="Group1" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input name="requestor" liveChange=".onRequestorChange" />
+                                    <Input name="requestor" liveChange=".onRequestorChange"/>
                                 </fb:control>
                             </fb:FilterGroupItem>
                             <fb:FilterGroupItem name="request_date" label="요청 일자" groupName="Group1" visibleInFilterBar="true">

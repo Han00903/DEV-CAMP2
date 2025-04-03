@@ -314,6 +314,37 @@ sap.ui.define([
             oBinding.filter(aFilters, "Application");
         },
 
+        onResetFilters: function () {
+            var oView = this.getView();
+            var oFilterBar = oView.byId("filterbar"); // 필터 바 ID 확인
+        
+            if (!oFilterBar) {
+                console.warn("필터 바를 찾을 수 없습니다.");
+                return;
+            }
+        
+            // 필터 바의 모든 필터 초기화
+            oFilterBar.getFilterGroupItems().forEach(function (oFilterGroupItem) {
+                var oControl = oFilterGroupItem.getControl();
+                if (oControl) {
+                    if (oControl instanceof sap.m.Input || oControl instanceof sap.m.DatePicker) {
+                        oControl.setValue(""); // 입력값 초기화
+                    } else if (oControl instanceof sap.m.MultiComboBox || oControl instanceof sap.m.ComboBox) {
+                        oControl.setSelectedKeys([]); // 선택값 초기화
+                    }
+                }
+            });
+        
+            // 테이블 필터 제거
+            var oTable = oView.byId("idRequestTable");
+            if (oTable) {
+                var oBinding = oTable.getBinding("items");
+                if (oBinding) {
+                    oBinding.filter([]); // 필터 제거
+                }
+            }
+        },        
+
         onSort: function () {
             this._bDescendingSort = !this._bDescendingSort;
             var oTable = this.getView().byId("idRequestTable");
