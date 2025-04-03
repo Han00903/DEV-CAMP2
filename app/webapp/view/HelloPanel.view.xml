@@ -85,7 +85,7 @@
                             sticky="HeaderToolbar,ColumnHeaders"
                             items="{
                                 path: 'requestModel>/value',
-                                sorter: { path: 'request_number' }
+                                sorter: { path: 'request_number', descending: true }
                             }"
                             class="sapUiSmallNegativeMarginBeginEnd"
                             width="auto">
